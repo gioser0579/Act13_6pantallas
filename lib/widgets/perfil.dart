@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
-import 'bienvenida.dart';
+import 'bienvenida.dart'; // Importante para el Badge y el Logo si se ocupa
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // URL de una imagen de la web (puedes cambiar esta URL por la que gustes)
+    // URL de la imagen de perfil (puedes cambiarla por cualquier link de internet)
     const String urlImagenPerfil = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png";
 
     return Scaffold(
-      backgroundColor: const Color(0xFF1B262C), // Fondo oscuro para que resalte la foto
+      backgroundColor: const Color(0xFF1B262C), // Fondo oscuro solicitado
       appBar: AppBar(
         title: const Text("MI PERFIL", style: TextStyle(color: Colors.white)),
-        backgroundColor: const Color(0xFF3282B8), // Diferente color de fondo en AppBar
+        backgroundColor: const Color(0xFF3282B8),
         iconTheme: const IconThemeData(color: Colors.white),
+        // REQUISITO: AppBar con 2 iconos en las acciones
         actions: const [
-          Icon(Icons.camera_alt, color: Colors.white),
+          Icon(Icons.edit, color: Colors.white),
           SizedBox(width: 15),
-          Icon(Icons.settings, color: Colors.white),
+          Icon(Icons.share, color: Colors.white),
           SizedBox(width: 15),
         ],
       ),
@@ -27,56 +28,31 @@ class ProfileScreen extends StatelessWidget {
           children: [
             const SizedBox(height: 40),
             
-            // FOTO DE PERFIL DESDE LA WEB
+            // FOTO DE PERFIL CIRCULAR DESDE LA WEB
             Center(
-              child: Stack(
-                alignment: Alignment.bottomRight,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: const Color(0xFFBBE1FA), width: 4),
-                    ),
-                    child: CircleAvatar(
-                      radius: 80,
-                      backgroundColor: Colors.white,
-                      // AQUÍ CARGAMOS LA IMAGEN DE LA WEB
-                      backgroundImage: const NetworkImage(urlImagenPerfil),
-                      // Si la imagen falla o carga, podemos poner un widget de carga
-                      child: ClipOval(
-                        child: Image.network(
-                          urlImagenPerfil,
-                          errorBuilder: (context, error, stackTrace) => 
-                            const Icon(Icons.person, size: 80, color: Colors.grey),
-                          loadingBuilder: (context, child, loadingProgress) {
-                            if (loadingProgress == null) return child;
-                            return const CircularProgressIndicator();
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                  // Icono flotante para "editar" la foto
-                  const CircleAvatar(
-                    radius: 20,
-                    backgroundColor: Color(0xFFBBE1FA),
-                    child: Icon(Icons.edit, size: 20, color: Color(0xFF0F4C75)),
-                  ),
-                ],
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: const Color(0xFFBBE1FA), width: 4),
+                ),
+                child: CircleAvatar(
+                  radius: 75,
+                  backgroundColor: Colors.white,
+                  backgroundImage: const NetworkImage(urlImagenPerfil),
+                ),
               ),
             ),
             
             const SizedBox(height: 30),
             
-            // INFORMACIÓN DEL ALUMNO
+            // INFORMACIÓN DEL USUARIO
             _infoItem("Nombre de Usuario", "Gioser Fisher"),
-            _infoItem("Grado y Grupo", "6-I"),
-            _infoItem("Especialidad", "Programación / Dental Tech"),
-            _infoItem("Correo Electrónico", "gioser.fisher@clinc.com"),
+            _infoItem("Número de Teléfono", "+52 123 456 7890"), // <--- CAMBIO REALIZADO AQUÍ
+            _infoItem("Correo Electrónico", "gioser.fisher@tech.com"),
             
-            const SizedBox(height: 50),
+            const SizedBox(height: 40),
             
-            // TU BADGE QUE NO PUEDE FALTAR
+            // REQUISITO: Nombre y Grupo en la pantalla
             const StudentBadge(),
             const SizedBox(height: 20),
           ],
@@ -85,7 +61,7 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  // Widget para las filas de información
+  // Widget reutilizable para las filas de información
   Widget _infoItem(String label, String value) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 8),
